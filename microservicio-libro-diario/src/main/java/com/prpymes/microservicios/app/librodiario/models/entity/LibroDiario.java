@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="libro_diario")
@@ -22,11 +26,17 @@ public class LibroDiario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idLibroDiario;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties(value = {"libroDiario"}, allowSetters = true)
+	@OneToMany(mappedBy = "libroDiario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Detalle> detalles;
 	
+	@NotEmpty
 	private String glosa;
+	
+	@NotEmpty
 	private String razonSocial;
+	
+	@NotEmpty
 	private String tipoLibro;
 	
 	@Temporal(TemporalType.DATE)
@@ -82,14 +92,17 @@ public class LibroDiario {
 	}
 
 	public void setDetalles(List<Detalle> detalles) {
-		this.detalles = detalles;
+		this.detalles.clear();
+		detalles.forEach(this::addDetalle);
 	}
 	
 	public void addDetalle(Detalle detalle) {
 		this.detalles.add(detalle);
+		detalle.setLibroDiario(this);
 	}
 	
 	public void removeDetalle(Detalle detalle) {
 		this.detalles.remove(detalle);
+		detalle.setLibroDiario(null);
 	}
 }

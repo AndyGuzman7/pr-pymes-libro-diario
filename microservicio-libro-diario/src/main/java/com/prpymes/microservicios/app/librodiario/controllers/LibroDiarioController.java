@@ -3,11 +3,16 @@ package com.prpymes.microservicios.app.librodiario.controllers;
 import org.springframework.http.HttpStatus;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +37,11 @@ public class LibroDiarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> crear(@RequestBody LibroDiario libro_diario){
+	public ResponseEntity<?> crear(@Valid @RequestBody LibroDiario libro_diario, BindingResult result){
+		if(result.hasErrors()) 
+		{
+			return this.validar(result);
+		}
 		LibroDiario libroDiarioDb = service.save(libro_diario);
 		return ResponseEntity.status(HttpStatus.CREATED).body(libroDiarioDb);
 	}
@@ -71,5 +80,15 @@ public class LibroDiarioController {
 		dbLibroDiario.removeDetalle(detalle);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(dbLibroDiario));
+	}
+	
+	protected ResponseEntity<?> validar(BindingResult result)
+	{
+		Map<String,Object> errores =new HashMap<>();
+		result.getFieldErrors().forEach(err ->
+		{
+			errores.put(err.getField(), "El campo "+ err.getField() + " " +err.getDefaultMessage());
+		});
+		return ResponseEntity.badRequest().body(errores);
 	}
 }
