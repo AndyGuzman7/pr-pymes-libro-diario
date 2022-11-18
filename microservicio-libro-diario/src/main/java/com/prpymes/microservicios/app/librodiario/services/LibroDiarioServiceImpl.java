@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,5 +37,19 @@ public class LibroDiarioServiceImpl implements LibroDiarioService {
 		
 		return repository.findById(id_libro_diario);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<LibroDiario> findAll() {
+		return (List<LibroDiario>) repository.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<LibroDiario> findAll(Pageable pageable) {
+		return repository.findByOrderByIdLibroDiarioAsc(pageable);
+	}
+	
+	
 
 }

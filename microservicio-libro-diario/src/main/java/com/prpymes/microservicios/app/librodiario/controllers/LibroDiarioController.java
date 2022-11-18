@@ -11,8 +11,10 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,25 +27,34 @@ import com.prpymes.microservicios.app.librodiario.models.entity.Detalle;
 import com.prpymes.microservicios.app.librodiario.models.entity.LibroDiario;
 import com.prpymes.microservicios.app.librodiario.services.LibroDiarioService;
 
+@CrossOrigin({"http://localhost:4200"})
 @RestController
 public class LibroDiarioController {
 	
 	@Autowired
 	private LibroDiarioService service;
 	
-	@GetMapping("/prueba")
-	ResponseEntity<String> hello() {
-	    return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-	}
-	
 	@PostMapping
-	public ResponseEntity<?> crear(@Valid @RequestBody LibroDiario libro_diario, BindingResult result){
+	public ResponseEntity<?> crear(@Valid @RequestBody LibroDiario libro_diario, BindingResult result)
+	{
 		if(result.hasErrors()) 
 		{
 			return this.validar(result);
 		}
 		LibroDiario libroDiarioDb = service.save(libro_diario);
 		return ResponseEntity.status(HttpStatus.CREATED).body(libroDiarioDb);
+	}
+	
+	@GetMapping("/listar")
+	public ResponseEntity<?> listar()
+	{
+		return ResponseEntity.ok().body(service.findAll());
+	}
+	
+	@GetMapping("/paginar")
+	public ResponseEntity<?> listarPorPaginas(Pageable pageable)
+	{
+		return ResponseEntity.ok().body(service.findAll(pageable));
 	}
 	
 	@GetMapping("/mostrar")
