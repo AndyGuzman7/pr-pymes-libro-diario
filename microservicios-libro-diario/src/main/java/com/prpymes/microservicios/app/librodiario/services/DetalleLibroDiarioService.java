@@ -5,4 +5,6 @@ import com.prpymes.microservicios.app.librodiario.models.entity.DetalleLibroDiar
 
 public interface DetalleLibroDiarioService {
 	public DetalleLibroDiario save(DetalleLibroDiario detalle);
+	
+	//public Iterable<String> findMontoCuentas(String codigoCuenta);
 }

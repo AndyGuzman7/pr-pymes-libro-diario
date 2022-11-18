@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.prpymes.microservicios.app.librodiario.models.entity.Cuentas;
 import com.prpymes.microservicios.app.librodiario.models.entity.DetalleLibroDiario;
 import com.prpymes.microservicios.app.librodiario.models.repository.DetalleLibroDiarioRepository;
 
@@ -18,4 +19,11 @@ public class DetalleLibroDiarioServiceImpl implements DetalleLibroDiarioService 
 	public DetalleLibroDiario save(DetalleLibroDiario libro) {
 		return repository.save(libro);
 	}
+	
+	/*@Override
+	@Transactional(readOnly = true)
+	public Iterable<String> findMontoCuentas(String codigoCuenta) {
+		// TODO Auto-generated method stub
+		return repository.findMontoCuentas(codigoCuenta);
+	}*/
 }
