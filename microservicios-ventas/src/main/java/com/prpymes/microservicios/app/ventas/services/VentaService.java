@@ -10,5 +10,5 @@ import com.prpymes.microservicios.app.ventas.models.entity.VentaSelectTotal;
 import com.prpymes.microservicios.commons.services.CommonService;
 
 public interface VentaService extends CommonService<Venta> {
-	public Iterable<String> findTotalSalesDate(String term1, String term2);
+	public Iterable<VentaSelectTotal> findTotalSalesDate(String term1, String term2);
 }
