@@ -31,7 +31,7 @@ public class VentaController extends CommonController<Venta, VentaService> {
 		
 	}
 	
-	@GetMapping("/venta/mostrar")
+	@GetMapping("/mostrar")
 	public ResponseEntity<?> filtrar(@RequestParam("fecha_inicio") String fecha_inicio, @RequestParam("fecha_fin") String fecha_fin)
 	{
 		return ResponseEntity .ok(service.findTotalSalesDate(fecha_inicio, fecha_fin));

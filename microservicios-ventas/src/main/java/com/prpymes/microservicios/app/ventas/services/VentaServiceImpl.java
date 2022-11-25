@@ -14,7 +14,7 @@ import com.prpymes.microservicios.commons.services.CommonServiceImpl;
 public class VentaServiceImpl extends CommonServiceImpl<Venta, VentaRepository> implements VentaService {
 	@Override
 	@Transactional(readOnly = true)
-	public Iterable<String> findTotalSalesDate(String term1, String term2) {
+	public Iterable<VentaSelectTotal> findTotalSalesDate(String term1, String term2) {
 		return repository.findTotalSalesDate(term1, term2);
 	}
 	

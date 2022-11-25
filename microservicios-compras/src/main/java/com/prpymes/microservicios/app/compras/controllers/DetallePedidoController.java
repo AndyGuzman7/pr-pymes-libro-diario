@@ -23,7 +23,7 @@ import com.prpymes.microservicios.commons.controllers.CommonControllerC;
 public class DetallePedidoController extends CommonControllerC<DetallePedido, DetallePedidoService> {
 
     @GetMapping("/detalle-pedidos/filtrar/fecha-total/")
-	public ResponseEntity<?> filtrarByTotal(@Param("from") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from,@Param("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to){
+	public ResponseEntity<?> filtrarByTotal(@Param("from") String from,@Param("to") String to){
 		return ResponseEntity.ok(service.findByDateTotal(from, to));
 	}
 
